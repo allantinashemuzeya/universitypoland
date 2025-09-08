@@ -381,7 +381,7 @@ export default function Landing({ auth, programs = [] }) {
                 </footer>
             </div>
 
-            <style jsx>{`
+            <style>{`
                 .line-clamp-3 {
                     display: -webkit-box;
                     -webkit-line-clamp: 3;

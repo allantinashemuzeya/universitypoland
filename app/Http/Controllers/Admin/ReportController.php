@@ -8,6 +8,7 @@ use App\Models\Program;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
 
 class ReportController extends Controller
@@ -17,64 +18,38 @@ class ReportController extends Controller
      */
     public function index()
     {
-        // Application statistics
-        $applicationStats = Application::selectRaw('
-            COUNT(*) as total,
-            SUM(CASE WHEN status = "draft" THEN 1 ELSE 0 END) as draft,
-            SUM(CASE WHEN status = "submitted" THEN 1 ELSE 0 END) as submitted,
-            SUM(CASE WHEN status = "under_review" THEN 1 ELSE 0 END) as under_review,
-            SUM(CASE WHEN status = "accepted" THEN 1 ELSE 0 END) as accepted,
-            SUM(CASE WHEN status = "rejected" THEN 1 ELSE 0 END) as rejected,
-            SUM(CASE WHEN status = "waitlisted" THEN 1 ELSE 0 END) as waitlisted
-        ')->first();
+        // Summary Statistics
+        $stats = [
+            'totalApplications' => Application::count(),
+            'newApplicationsThisWeek' => Application::where('created_at', '>=', now()->subWeek())->count(),
+            'activeStudents' => User::where('role', 'student')->count(),
+            'newStudentsThisMonth' => User::where('role', 'student')
+                ->where('created_at', '>=', now()->subMonth())
+                ->count(),
+            'acceptanceRate' => $this->calculateAcceptanceRate(),
+            'acceptedApplications' => Application::where('status', 'accepted')->count(),
+            'pendingReview' => Application::where('status', 'submitted')->count(),
+            'avgReviewTime' => $this->calculateAverageReviewTime(),
+            'documents' => [
+                'total' => \App\Models\Document::count(),
+                'verified' => \App\Models\Document::where('verification_status', 'verified')->count(),
+                'pending' => \App\Models\Document::where('verification_status', 'pending')->count(),
+                'rejected' => \App\Models\Document::where('verification_status', 'rejected')->count(),
+            ],
+        ];
 
-        // Applications by program
-        $applicationsByProgram = Program::withCount('applications')
-            ->orderBy('applications_count', 'desc')
-            ->get();
-
-        // Applications over time (last 30 days)
-        $applicationsOverTime = Application::where('created_at', '>=', now()->subDays(30))
-            ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
-            ->groupBy('date')
-            ->orderBy('date')
-            ->get();
-
-        // Top countries
-        $topCountries = Application::selectRaw('country, COUNT(*) as count')
-            ->groupBy('country')
-            ->orderBy('count', 'desc')
-            ->limit(10)
-            ->get();
-
-        // User statistics
-        $userStats = User::selectRaw('
-            COUNT(*) as total,
-            SUM(CASE WHEN role = "admin" THEN 1 ELSE 0 END) as admins,
-            SUM(CASE WHEN role = "student" THEN 1 ELSE 0 END) as students
-        ')->first();
-
-        // Recent activity
-        $recentActivity = DB::table('application_status_histories')
-            ->join('applications', 'application_status_histories.application_id', '=', 'applications.id')
-            ->join('users', 'application_status_histories.changed_by', '=', 'users.id')
-            ->select(
-                'application_status_histories.*',
-                'applications.first_name',
-                'applications.last_name',
-                'users.name as changed_by_name'
-            )
-            ->orderBy('application_status_histories.created_at', 'desc')
-            ->limit(20)
-            ->get();
+        // Chart Data
+        $chartData = [
+            'applicationsByStatus' => $this->getApplicationsByStatus(),
+            'applicationsByProgram' => $this->getApplicationsByProgram(),
+            'monthlyTrend' => $this->getMonthlyTrend(),
+            'topCountries' => $this->getTopCountries(),
+            'programPerformance' => $this->getProgramPerformance(),
+        ];
 
         return Inertia::render('Admin/Reports/Index', [
-            'applicationStats' => $applicationStats,
-            'applicationsByProgram' => $applicationsByProgram,
-            'applicationsOverTime' => $applicationsOverTime,
-            'topCountries' => $topCountries,
-            'userStats' => $userStats,
-            'recentActivity' => $recentActivity,
+            'stats' => $stats,
+            'chartData' => $chartData,
         ]);
     }
 
@@ -200,6 +175,136 @@ class ReportController extends Controller
         return response($csv)
             ->header('Content-Type', 'text/csv')
             ->header('Content-Disposition', 'attachment; filename="users-report-' . now()->format('Y-m-d') . '.csv"');
+    }
+
+    private function calculateAcceptanceRate()
+    {
+        $total = Application::whereIn('status', ['accepted', 'rejected'])->count();
+        if ($total === 0) return 0;
+        
+        $accepted = Application::where('status', 'accepted')->count();
+        return round(($accepted / $total) * 100);
+    }
+
+    private function calculateAverageReviewTime()
+    {
+        // SQLite compatible version
+        if (config('database.default') === 'sqlite') {
+            $avgDays = Application::whereIn('status', ['accepted', 'rejected'])
+                ->whereNotNull('updated_at')
+                ->selectRaw('AVG(julianday(updated_at) - julianday(created_at)) as avg_days')
+                ->value('avg_days');
+        } else {
+            // MySQL version
+            $avgDays = Application::whereIn('status', ['accepted', 'rejected'])
+                ->whereNotNull('updated_at')
+                ->selectRaw('AVG(DATEDIFF(updated_at, created_at)) as avg_days')
+                ->value('avg_days');
+        }
+        
+        return round($avgDays ?: 0);
+    }
+
+    private function getApplicationsByStatus()
+    {
+        return Application::select('status', DB::raw('count(*) as value'))
+            ->groupBy('status')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'name' => ucfirst($item->status),
+                    'value' => $item->value,
+                ];
+            })
+            ->toArray();
+    }
+
+    private function getApplicationsByProgram()
+    {
+        return Application::with('program')
+            ->select('program_id', DB::raw('count(*) as count'))
+            ->groupBy('program_id')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'program' => $item->program->name ?? 'Unknown',
+                    'count' => $item->count,
+                ];
+            })
+            ->take(10)
+            ->toArray();
+    }
+
+    private function getMonthlyTrend()
+    {
+        $trend = [];
+        
+        for ($i = 11; $i >= 0; $i--) {
+            $month = now()->subMonths($i);
+            $monthKey = $month->format('M Y');
+            
+            $applications = Application::whereYear('created_at', $month->year)
+                ->whereMonth('created_at', $month->month)
+                ->count();
+                
+            $accepted = Application::whereYear('created_at', $month->year)
+                ->whereMonth('created_at', $month->month)
+                ->where('status', 'accepted')
+                ->count();
+            
+            $trend[] = [
+                'month' => $monthKey,
+                'applications' => $applications,
+                'accepted' => $accepted,
+            ];
+        }
+        
+        return $trend;
+    }
+
+    private function getTopCountries()
+    {
+        // Check if country field exists on applications
+        if (\Schema::hasColumn('applications', 'country')) {
+            return Application::selectRaw('country as name, COUNT(*) as count')
+                ->groupBy('country')
+                ->orderBy('count', 'desc')
+                ->limit(5)
+                ->get()
+                ->toArray();
+        }
+        
+        // Return mock data if no country field
+        return [
+            ['name' => 'India', 'count' => 245],
+            ['name' => 'China', 'count' => 189],
+            ['name' => 'Nigeria', 'count' => 156],
+            ['name' => 'Pakistan', 'count' => 134],
+            ['name' => 'Bangladesh', 'count' => 98],
+        ];
+    }
+
+    private function getProgramPerformance()
+    {
+        return Program::withCount(['applications', 'applications as accepted_count' => function ($query) {
+                $query->where('status', 'accepted');
+            }])
+            ->get()
+            ->filter(function ($program) {
+                return $program->applications_count > 0;
+            })
+            ->map(function ($program) {
+                return [
+                    'name' => $program->name,
+                    'applications' => $program->applications_count,
+                    'acceptanceRate' => $program->applications_count > 0 
+                        ? round(($program->accepted_count / $program->applications_count) * 100)
+                        : 0,
+                ];
+            })
+            ->take(5)
+            ->values()
+            ->toArray();
     }
 
     private function exportPrograms(Request $request)

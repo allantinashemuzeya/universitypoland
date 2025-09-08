@@ -12,14 +12,26 @@ class ProgramController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $programs = Program::withCount('applications')
-            ->orderBy('name')
-            ->paginate(20);
+        $query = Program::withCount('applications');
+        
+        // Handle search
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('code', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhere('faculty', 'like', "%{$search}%");
+            });
+        }
+        
+        $programs = $query->orderBy('name')->paginate(20);
 
         return Inertia::render('Admin/Programs/Index', [
             'programs' => $programs,
+            'filters' => $request->only(['search']),
         ]);
     }
 

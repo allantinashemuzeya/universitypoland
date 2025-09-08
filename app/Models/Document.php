@@ -18,7 +18,7 @@ class Document extends Model
         'file_size',
         'mime_type',
         'description',
-        'status',
+        'verification_status',
         'rejection_reason',
         'verified_at',
         'verified_by',
@@ -69,7 +69,7 @@ class Document extends Model
      */
     public function isPending(): bool
     {
-        return $this->status === 'pending';
+        return $this->verification_status === 'pending';
     }
 
     /**
@@ -77,7 +77,7 @@ class Document extends Model
      */
     public function isVerified(): bool
     {
-        return $this->status === 'verified';
+        return $this->verification_status === 'verified';
     }
 
     /**
@@ -85,6 +85,6 @@ class Document extends Model
      */
     public function isRejected(): bool
     {
-        return $this->status === 'rejected';
+        return $this->verification_status === 'rejected';
     }
 }

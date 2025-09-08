@@ -16,7 +16,7 @@ class DocumentController extends Controller
      */
     public function pending()
     {
-        $documents = Document::where('status', 'pending')
+        $documents = Document::where('verification_status', 'pending')
             ->with(['application.user', 'application.program'])
             ->orderBy('created_at', 'asc')
             ->paginate(20);
@@ -49,7 +49,7 @@ class DocumentController extends Controller
         ]);
 
         $document->update([
-            'status' => $request->status,
+            'verification_status' => $request->status,
             'rejection_reason' => $request->status === 'rejected' ? $request->review_notes : null,
             'verified_by' => auth()->id(),
             'verified_at' => now(),
@@ -101,9 +101,9 @@ class DocumentController extends Controller
         ]);
 
         Document::whereIn('id', $request->document_ids)
-            ->where('status', 'pending')
+            ->where('verification_status', 'pending')
             ->update([
-                'status' => 'verified',
+                'verification_status' => 'verified',
                 'verified_by' => auth()->id(),
                 'verified_at' => now(),
             ]);
@@ -124,9 +124,9 @@ class DocumentController extends Controller
         ]);
 
         Document::whereIn('id', $request->document_ids)
-            ->where('status', 'pending')
+            ->where('verification_status', 'pending')
             ->update([
-                'status' => 'rejected',
+                'verification_status' => 'rejected',
                 'rejection_reason' => $request->review_notes,
                 'verified_by' => auth()->id(),
                 'verified_at' => now(),

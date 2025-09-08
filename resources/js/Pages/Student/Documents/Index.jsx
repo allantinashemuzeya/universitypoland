@@ -6,6 +6,14 @@ export default function DocumentsIndex({ auth, documents }) {
     const { flash } = usePage().props;
     
     const getStatusBadge = (status) => {
+        if (!status) {
+            return (
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                    Unknown
+                </span>
+            );
+        }
+        
         const statusClasses = {
             pending: 'bg-yellow-100 text-yellow-800',
             verified: 'bg-green-100 text-green-800',
@@ -13,7 +21,7 @@ export default function DocumentsIndex({ auth, documents }) {
         };
         
         return (
-            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusClasses[status]}`}>
+            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusClasses[status] || 'bg-gray-100 text-gray-800'}`}>
                 {status.charAt(0).toUpperCase() + status.slice(1)}
             </span>
         );
@@ -106,7 +114,7 @@ export default function DocumentsIndex({ auth, documents }) {
                                                         </div>
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap">
-                                                        {getStatusBadge(document.status)}
+                                                        {getStatusBadge(document.verification_status)}
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                         {new Date(document.created_at).toLocaleDateString()}

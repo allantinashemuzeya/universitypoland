@@ -174,11 +174,11 @@ export default function Show({ auth, application }) {
                                                 </div>
                                                 <div className="flex items-center space-x-3">
                                                     <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                                        document.status === 'verified' ? 'bg-green-100 text-green-800' :
-                                                        document.status === 'rejected' ? 'bg-red-100 text-red-800' :
+                                                        document.verification_status === 'verified' ? 'bg-green-100 text-green-800' :
+                                                        document.verification_status === 'rejected' ? 'bg-red-100 text-red-800' :
                                                         'bg-yellow-100 text-yellow-800'
                                                     }`}>
-                                                        {document.status}
+                                                        {document.verification_status}
                                                     </span>
                                                     <a
                                                         href={route('admin.documents.download', document.id)}

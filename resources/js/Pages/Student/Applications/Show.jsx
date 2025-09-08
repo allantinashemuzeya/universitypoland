@@ -44,6 +44,14 @@ export default function ShowApplication({ auth, application }) {
     };
 
     const getDocumentStatusBadge = (status) => {
+        if (!status) {
+            return (
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">
+                    Unknown
+                </span>
+            );
+        }
+        
         const statusClasses = {
             pending: 'bg-yellow-100 text-yellow-800',
             verified: 'bg-green-100 text-green-800',
@@ -51,7 +59,7 @@ export default function ShowApplication({ auth, application }) {
         };
         
         return (
-            <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${statusClasses[status]}`}>
+            <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${statusClasses[status] || 'bg-gray-100 text-gray-800'}`}>
                 {status.charAt(0).toUpperCase() + status.slice(1)}
             </span>
         );
@@ -292,7 +300,7 @@ export default function ShowApplication({ auth, application }) {
                                                     </div>
                                                     {doc ? (
                                                         <div className="flex items-center space-x-2">
-                                                            {getDocumentStatusBadge(doc.status)}
+                                                            {getDocumentStatusBadge(doc.verification_status)}
                                                             <a
                                                                 href={route('student.documents.show', doc.id)}
                                                                 target="_blank"
