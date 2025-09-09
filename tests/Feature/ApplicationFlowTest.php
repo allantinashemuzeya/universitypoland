@@ -165,7 +165,7 @@ class ApplicationFlowTest extends TestCase
         // Step 10: Admin reviews and approves documents
         foreach ($application->documents as $document) {
             $response = $this->post(route('admin.documents.updateStatus', $document), [
-                'status' => 'verified',
+                'verification_status' => 'verified',
                 'review_notes' => 'Document verified',
             ]);
             $response->assertRedirect();
@@ -228,7 +228,7 @@ class ApplicationFlowTest extends TestCase
         
         $document = Document::where('application_id', $application->id)->first();
         $this->assertNotNull($document);
-        $this->assertEquals('pending', $document->status);
+        $this->assertEquals('pending', $document->verification_status);
         $this->assertEquals('passport', $document->type);
         
         Storage::disk('private')->assertExists($document->file_path);
@@ -245,14 +245,14 @@ class ApplicationFlowTest extends TestCase
         
         // Admin approves the document
         $response = $this->post(route('admin.documents.updateStatus', $document), [
-            'status' => 'verified',
+            'verification_status' => 'verified',
             'review_notes' => 'Document looks good',
         ]);
         
         $response->assertRedirect();
         
         $document->refresh();
-        $this->assertEquals('verified', $document->status);
+        $this->assertEquals('verified', $document->verification_status);
         $this->assertEquals($this->admin->id, $document->verified_by);
         $this->assertNotNull($document->verified_at);
     }

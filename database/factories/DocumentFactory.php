@@ -29,7 +29,7 @@ class DocumentFactory extends Factory
             'file_size' => $this->faker->numberBetween(100000, 5000000), // 100KB to 5MB
             'mime_type' => $this->faker->randomElement(['application/pdf', 'image/jpeg', 'image/png']),
             'description' => $this->faker->optional()->sentence(),
-            'status' => $this->faker->randomElement($statuses),
+            'verification_status' => $this->faker->randomElement($statuses),
             'verified_by' => null,
             'verified_at' => null,
             'rejection_reason' => null,
@@ -42,7 +42,7 @@ class DocumentFactory extends Factory
     public function pending(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status' => 'pending',
+            'verification_status' => 'pending',
             'verified_by' => null,
             'verified_at' => null,
             'rejection_reason' => null,
@@ -55,7 +55,7 @@ class DocumentFactory extends Factory
     public function verified(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status' => 'verified',
+            'verification_status' => 'verified',
             'verified_by' => 1, // Would normally be a user ID
             'verified_at' => now(),
             'rejection_reason' => null,
@@ -68,7 +68,7 @@ class DocumentFactory extends Factory
     public function rejected(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status' => 'rejected',
+            'verification_status' => 'rejected',
             'verified_by' => 1, // Would normally be a user ID
             'verified_at' => now(),
             'rejection_reason' => $this->faker->sentence(),

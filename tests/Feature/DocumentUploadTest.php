@@ -63,7 +63,7 @@ class DocumentUploadTest extends TestCase
             'type' => 'passport',
             'file_name' => 'test-document.pdf',
             'description' => 'My passport copy',
-            'status' => 'pending',
+            'verification_status' => 'pending',
         ]);
         
         $document = Document::where('application_id', $this->application->id)->first();
