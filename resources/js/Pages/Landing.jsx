@@ -6,7 +6,7 @@ export default function Landing({ auth, programs = [] }) {
 
     return (
         <>
-            <Head title="Welcome - UITM Poland Student Recruitment" />
+            <Head title="Welcome - Nexus Study | International University Applications" />
             
             <div className="min-h-screen bg-white">
                 {/* Navigation */}
@@ -15,7 +15,7 @@ export default function Landing({ auth, programs = [] }) {
                         <div className="flex justify-between h-20">
                             <div className="flex items-center">
                                 <h1 className="text-2xl font-display font-bold text-primary-700">
-                                    UITM Poland
+                                    Nexus Study
                                 </h1>
                             </div>
                             <div className="hidden md:flex items-center space-x-8">
@@ -98,8 +98,8 @@ export default function Landing({ auth, programs = [] }) {
                                 Your Journey to Excellence Starts Here
                             </h2>
                             <p className="text-xl text-gray-200 mb-8 animate-slide-up animation-delay-200">
-                                Join UITM Poland and unlock world-class education in the heart of Europe. 
-                                Perfect for students from Zimbabwe, Asia, and beyond.
+                                Connect with top universities across Europe and unlock world-class education opportunities. 
+                                Perfect for international students from around the globe.
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 animate-slide-up animation-delay-400">
                                 <Link
@@ -205,13 +205,12 @@ export default function Landing({ auth, programs = [] }) {
                         <div className="grid lg:grid-cols-2 gap-12 items-center">
                             <div>
                                 <h3 className="text-4xl font-display font-bold text-dark-900 mb-6">
-                                    Why Choose UITM Poland?
+                                    Why Choose Nexus Study?
                                 </h3>
                                 <p className="text-gray-600 mb-6">
-                                    The University of Information Technology and Management (UITM) in Poland 
-                                    is a leading institution offering world-class education with a global perspective. 
-                                    Located in the vibrant city of Rzeszów, we provide an ideal environment for 
-                                    international students to thrive academically and culturally.
+                                    Nexus Study connects ambitious international students with leading universities 
+                                    across Europe. We simplify the application process and provide comprehensive support 
+                                    to help you achieve your educational goals in world-renowned institutions.
                                 </p>
                                 <div className="space-y-4">
                                     <div className="flex items-start">
@@ -311,7 +310,7 @@ export default function Landing({ auth, programs = [] }) {
                             Ready to Start Your Journey?
                         </h3>
                         <p className="text-xl text-primary-100 mb-8">
-                            Join thousands of international students who have chosen UITM Poland for their education. 
+                            Join thousands of international students who have successfully started their journey with Nexus Study. 
                             Apply now and take the first step towards your future.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -339,13 +338,13 @@ export default function Landing({ auth, programs = [] }) {
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="grid md:grid-cols-4 gap-8">
                             <div>
-                                <h4 className="text-xl font-display font-bold mb-4">UITM Poland</h4>
-                                <p className="text-gray-400">
-                                    University of Information Technology and Management
-                                </p>
-                                <p className="text-gray-400 mt-2">
-                                    Rzeszów, Poland
-                                </p>
+                            <h4 className="text-xl font-display font-bold mb-4">Nexus Study</h4>
+                            <p className="text-gray-400">
+                                Your Gateway to European Education
+                            </p>
+                            <p className="text-gray-400 mt-2">
+                                Connecting Students Worldwide
+                            </p>
                             </div>
                             <div>
                                 <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
@@ -368,14 +367,14 @@ export default function Landing({ auth, programs = [] }) {
                             <div>
                                 <h4 className="text-lg font-semibold mb-4">Contact</h4>
                                 <ul className="space-y-2 text-gray-400">
-                                    <li>Email: admissions@uitm.pl</li>
-                                    <li>Phone: +48 123 456 789</li>
-                                    <li>WhatsApp: +48 987 654 321</li>
+                                    <li>Email: admissions@nexusstudy.com</li>
+                                    <li>Phone: +1 234 567 890</li>
+                                    <li>WhatsApp: +1 234 567 890</li>
                                 </ul>
                             </div>
                         </div>
                         <div className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
-                            <p>&copy; 2024 UITM Poland. All rights reserved.</p>
+                            <p>&copy; 2024 Nexus Study. All rights reserved.</p>
                         </div>
                     </div>
                 </footer>

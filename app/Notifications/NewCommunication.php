@@ -50,7 +50,7 @@ class NewCommunication extends Notification implements ShouldQueue
             ->line($this->communication->message)
             ->action('View Message', url('/student/applications/' . $this->communication->application_id . '/messages'))
             ->line('Please log in to your account to respond.')
-            ->line('Thank you for using UITM Student Portal.');
+            ->line('Thank you for using Nexus Study Portal.');
     }
 
     /**

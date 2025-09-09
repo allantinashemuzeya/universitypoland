@@ -1,5 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
-import GuestLayout from '@/Layouts/GuestLayout';
+import PublicLayout from '@/Layouts/PublicLayout';
 
 export default function Resources() {
     const sections = [
@@ -46,7 +46,7 @@ export default function Resources() {
     ];
 
     return (
-        <GuestLayout>
+        <PublicLayout>
             <Head title="Resources - Life in Poland" />
 
             <div className="py-12">
@@ -115,10 +115,10 @@ export default function Resources() {
                         <div className="max-w-3xl mx-auto space-y-4">
                             <details className="bg-white rounded-lg p-6 shadow">
                                 <summary className="font-semibold text-dark-900 cursor-pointer">
-                                    Do I need to speak Polish to study at UITM?
+                                    Do I need to speak the local language to study?
                                 </summary>
                                 <p className="mt-4 text-gray-600">
-                                    No, all international programs are conducted entirely in English. However, we offer free Polish language courses to help you integrate better into local life.
+                                    No, all international programs at partner universities are conducted entirely in English. However, most universities offer free language courses to help you integrate better into local life.
                                 </p>
                             </details>
                             <details className="bg-white rounded-lg p-6 shadow">
@@ -134,7 +134,7 @@ export default function Resources() {
                                     What about post-study opportunities?
                                 </summary>
                                 <p className="mt-4 text-gray-600">
-                                    Poland offers a post-study work visa allowing graduates to stay and search for employment. Many international companies in Poland actively recruit UITM graduates.
+                                    Poland offers a post-study work visa allowing graduates to stay and search for employment. Many international companies actively recruit graduates from European universities.
                                 </p>
                             </details>
                             <details className="bg-white rounded-lg p-6 shadow">
@@ -153,7 +153,7 @@ export default function Resources() {
                         <h2 className="text-2xl font-bold mb-4">Need More Information?</h2>
                         <p className="mb-6">Our international student support team is here to help you!</p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <a href="mailto:international@uitm.pl" className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition inline-block">
+                            <a href="mailto:support@nexusstudy.com" className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition inline-block">
                                 Email Support
                             </a>
                             <a href="#" className="border-2 border-white text-white px-6 py-3 rounded-lg hover:bg-white hover:text-dark-900 transition inline-block">
@@ -161,11 +161,11 @@ export default function Resources() {
                             </a>
                         </div>
                         <p className="mt-6 text-gray-400">
-                            WhatsApp: +48 987 654 321 | Office Hours: Mon-Fri 9:00-17:00 CET
+                            WhatsApp: +1 234 567 890 | Office Hours: Mon-Fri 9:00-17:00 CET
                         </p>
                     </div>
                 </div>
             </div>
-        </GuestLayout>
+        </PublicLayout>
     );
 }

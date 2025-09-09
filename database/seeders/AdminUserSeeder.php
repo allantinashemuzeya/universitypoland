@@ -16,7 +16,7 @@ class AdminUserSeeder extends Seeder
     {
         User::create([
             'name' => 'Admin User',
-            'email' => 'admin@uitm.pl',
+            'email' => 'admin@nexusstudy.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
             'email_verified_at' => now(),
@@ -24,7 +24,7 @@ class AdminUserSeeder extends Seeder
 
         User::create([
             'name' => 'Admissions Officer',
-            'email' => 'admissions@uitm.pl',
+            'email' => 'admissions@nexusstudy.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
             'email_verified_at' => now(),

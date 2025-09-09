@@ -65,7 +65,7 @@ class ApplicationStatusChanged extends Notification implements ShouldQueue
         }
 
         $mail->action('View Application', url('/student/applications/' . $this->application->id))
-             ->line('Thank you for choosing UITM Poland!');
+             ->line('Thank you for choosing Nexus Study!');
 
         if ($this->application->status === 'approved') {
             $mail->line('Next steps will be communicated to you shortly.');

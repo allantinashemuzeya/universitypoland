@@ -357,7 +357,7 @@ export default function EditApplication({ auth, application, programs }) {
                                 <div>
                                     <h3 className="text-lg font-medium text-gray-900 mb-4">Motivation Letter</h3>
                                     <div>
-                                        <InputLabel htmlFor="motivation_letter" value="Why do you want to study at UITM Poland?" />
+                                        <InputLabel htmlFor="motivation_letter" value="Why do you want to study at this university?" />
                                         <textarea
                                             id="motivation_letter"
                                             className="mt-1 block w-full border-gray-300 focus:border-primary-500 focus:ring-primary-500 rounded-md shadow-sm"

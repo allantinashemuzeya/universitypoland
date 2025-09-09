@@ -106,7 +106,7 @@ class ApplicationSeeder extends Seeder
             'user_id' => $student3->id,
             'program_id' => $mba->id,
             'status' => 'approved',
-            'personal_statement' => 'With 3 years of experience in international trade, I aim to expand my business knowledge at UITM.',
+            'personal_statement' => 'With 3 years of experience in international trade, I aim to expand my business knowledge through advanced education in Europe.',
             'previous_education' => 'Bachelor of Commerce, Beijing University',
             'grade_average' => '85%',
             'emergency_contact' => json_encode([

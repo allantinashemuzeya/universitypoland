@@ -1,6 +1,6 @@
-# UITM Poland Student Recruitment System
+# Nexus Study - International University Application Platform
 
-A comprehensive web application for managing student applications to the University of Information Technology and Management (UITM) in Poland. Built with Laravel, React, and Inertia.js.
+A comprehensive web application for managing student applications to universities across Europe. Built with Laravel, React, and Inertia.js to streamline the international student application process.
 
 ## Features
 
@@ -33,8 +33,8 @@ A comprehensive web application for managing student applications to the Univers
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/uitm-recruitment.git
-cd uitm-recruitment
+git clone https://github.com/yourusername/nexus-study.git
+cd nexus-study
 ```
 
 2. Install PHP dependencies:
@@ -58,7 +58,7 @@ php artisan key:generate
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=uitm_recruitment
+DB_DATABASE=nexus_study
 DB_USERNAME=your_username
 DB_PASSWORD=your_password
 ```
@@ -88,10 +88,10 @@ npm run dev
 After seeding, you can login with:
 
 ### Admin Users
-- Email: `admin@uitm.pl`
+- Email: `admin@nexusstudy.com`
 - Password: `password`
 
-- Email: `admissions@uitm.pl`
+- Email: `admissions@nexusstudy.com`
 - Password: `password`
 
 ### Sample Student Users
@@ -107,7 +107,7 @@ After seeding, you can login with:
 - Hero section with call-to-action
 - Program showcase
 - Statistics display
-- About UITM section
+- About Nexus Study section
 - Life in Poland resources
 - Responsive design with mobile menu
 
@@ -185,8 +185,8 @@ Please follow the standard Git flow:
 
 ## License
 
-This project is proprietary software for UITM Poland.
+This project is proprietary software for Nexus Study.
 
 ## Support
 
-For technical support, contact: tech@uitm.pl
+For technical support, contact: tech@nexusstudy.com

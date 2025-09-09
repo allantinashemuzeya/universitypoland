@@ -66,7 +66,7 @@ class TestDataSeeder extends Seeder
             'file_path' => 'documents/' . $sarahSubmittedApp->id . '/passport.pdf',
             'file_size' => '1024000',
             'mime_type' => 'application/pdf',
-            'status' => 'verified',
+            'verification_status' => 'verified',
             'verified_at' => now(),
             'verified_by' => $admin->id,
         ]);
@@ -78,7 +78,7 @@ class TestDataSeeder extends Seeder
             'file_path' => 'documents/' . $sarahSubmittedApp->id . '/transcript.pdf',
             'file_size' => '2048000',
             'mime_type' => 'application/pdf',
-            'status' => 'pending',
+            'verification_status' => 'pending',
         ]);
 
         Document::create([
@@ -88,7 +88,7 @@ class TestDataSeeder extends Seeder
             'file_path' => 'documents/' . $sarahSubmittedApp->id . '/diploma.pdf',
             'file_size' => '1536000',
             'mime_type' => 'application/pdf',
-            'status' => 'pending',
+            'verification_status' => 'pending',
         ]);
 
         // Add a communication from admin to Sarah
@@ -114,6 +114,6 @@ class TestDataSeeder extends Seeder
         $this->command->info('Test accounts:');
         $this->command->info('Student 1: john.mukamuri@example.com / password');
         $this->command->info('Student 2: sarah.chigumba@example.com / password');
-        $this->command->info('Admin: admin@uitm.pl / password');
+        $this->command->info('Admin: admin@nexusstudy.com / password');
     }
 }

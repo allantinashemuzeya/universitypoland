@@ -89,8 +89,8 @@ resources/js/
 ### Default User Credentials
 ```
 Admin Users:
-- admin@uitm.pl / password
-- admissions@uitm.pl / password
+- admin@nexusstudy.com / password
+- admissions@nexusstudy.com / password
 
 Student Users:
 - john.mukamuri@example.com / password
