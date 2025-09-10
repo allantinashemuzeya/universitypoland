@@ -15,6 +15,10 @@ class Application extends Model
         'user_id',
         'program_id',
         'status',
+        'application_fee_paid',
+        'application_fee_paid_at',
+        'commitment_fee_paid',
+        'commitment_fee_paid_at',
         'first_name',
         'last_name',
         'date_of_birth',
@@ -46,8 +50,12 @@ class Application extends Model
         'date_of_birth' => 'date',
         'submission_date' => 'datetime',
         'reviewed_at' => 'datetime',
+        'application_fee_paid_at' => 'datetime',
+        'commitment_fee_paid_at' => 'datetime',
         'graduation_year' => 'integer',
         'gpa' => 'decimal:2',
+        'application_fee_paid' => 'boolean',
+        'commitment_fee_paid' => 'boolean',
     ];
 
     /**
@@ -111,6 +119,14 @@ class Application extends Model
     }
 
     /**
+     * Get payments for this application
+     */
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    /**
      * Check if application is editable
      */
     public function isEditable(): bool
@@ -131,5 +147,39 @@ class Application extends Model
         }
         
         return ($currentIndex / 4) * 100; // 4 main steps to approval
+    }
+
+    /**
+     * Check if application fee has been paid
+     */
+    public function hasApplicationFeePaid(): bool
+    {
+        return $this->application_fee_paid || 
+               $this->payments()->where('type', 'application_fee')->where('status', 'succeeded')->exists();
+    }
+
+    /**
+     * Check if commitment fee has been paid
+     */
+    public function hasCommitmentFeePaid(): bool
+    {
+        return $this->commitment_fee_paid || 
+               $this->payments()->where('type', 'commitment_fee')->where('status', 'succeeded')->exists();
+    }
+
+    /**
+     * Get the latest payment for this application
+     */
+    public function latestPayment()
+    {
+        return $this->payments()->latest()->first();
+    }
+
+    /**
+     * Check if application can be submitted (has paid application fee)
+     */
+    public function canBeSubmitted(): bool
+    {
+        return $this->status === 'draft' && $this->hasApplicationFeePaid();
     }
 }

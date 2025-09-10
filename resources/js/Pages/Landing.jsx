@@ -6,11 +6,58 @@ export default function Landing({ auth, programs = [] }) {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     
     const heroImages = [
-        'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070',
-        'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070',
-        'https://images.unsplash.com/photo-1571260899304-425eee4c7efc?q=80&w=2070',
-        'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071'
+        'https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+        'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+        'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+        'https://images.unsplash.com/photo-1607237138185-eedd9c632b0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
     ];
+
+    const FALLBACKS = {
+        hero: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+        generic: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+        avatar: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=80'
+    };
+    
+    // Program background images based on degree level and field
+    const getProgramImage = (program) => {
+        const programImages = {
+            bachelor: {
+                business: 'https://images.unsplash.com/photo-1556761175-4b46a572b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                engineering: 'https://images.unsplash.com/photo-1581092921461-eab62e97a780?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                medicine: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                computer: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                arts: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                default: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+            },
+            master: {
+                business: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                engineering: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                medicine: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                computer: 'https://images.unsplash.com/photo-1610563166150-b34df4f3bcd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                default: 'https://images.unsplash.com/photo-1522661067900-ab829854a57f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+            },
+            phd: {
+                default: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+            }
+        };
+        
+        const name = program.name.toLowerCase();
+        const level = program.degree_level;
+        
+        if (name.includes('business') || name.includes('management') || name.includes('mba')) {
+            return programImages[level]?.business || programImages[level]?.default;
+        } else if (name.includes('engineering') || name.includes('technology')) {
+            return programImages[level]?.engineering || programImages[level]?.default;
+        } else if (name.includes('medicine') || name.includes('medical') || name.includes('health')) {
+            return programImages[level]?.medicine || programImages[level]?.default;
+        } else if (name.includes('computer') || name.includes('software') || name.includes('information')) {
+            return programImages[level]?.computer || programImages[level]?.default;
+        } else if (name.includes('arts') || name.includes('design')) {
+            return programImages[level]?.arts || programImages[level]?.default;
+        }
+        
+        return programImages[level]?.default || programImages.bachelor.default;
+    };
     
     useEffect(() => {
         const interval = setInterval(() => {
@@ -109,6 +156,9 @@ export default function Landing({ auth, programs = [] }) {
                                     src={image}
                                     alt="University campus"
                                     className="w-full h-full object-cover"
+                                    loading="eager"
+                                    decoding="async"
+                                    onError={(e) => { e.currentTarget.src = FALLBACKS.hero; e.currentTarget.onerror = null; }}
                                 />
                             </div>
                         ))}
@@ -189,15 +239,27 @@ export default function Landing({ auth, programs = [] }) {
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {programs.slice(0, 6).map((program) => (
                                 <div key={program.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition">
-                                    <div className="h-48 bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center">
-                                        <div className="text-white text-center">
-                                            <div className="text-5xl mb-2">
-                                                {program.degree_level === 'bachelor' && '🎓'}
-                                                {program.degree_level === 'master' && '🎯'}
-                                                {program.degree_level === 'phd' && '🔬'}
-                                            </div>
-                                            <div className="text-sm uppercase tracking-wide">
-                                                {program.degree_level}'s Degree
+                                    <div className="relative h-48">
+                                        <img
+                                            src={getProgramImage(program)}
+                                            alt={`${program.name} banner`}
+                                            className="absolute inset-0 w-full h-full object-cover"
+                                            loading="lazy"
+                                            decoding="async"
+                                            onError={(e) => { e.currentTarget.src = FALLBACKS.generic; e.currentTarget.onerror = null; }}
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent flex items-end">
+                                            <div className="text-white p-6 w-full">
+                                                <div className="flex items-center justify-between">
+                                                    <div className="text-3xl">
+                                                        {program.degree_level === 'bachelor' && '🎓'}
+                                                        {program.degree_level === 'master' && '🎯'}
+                                                        {program.degree_level === 'phd' && '🔬'}
+                                                    </div>
+                                                    <div className="text-sm uppercase tracking-wide bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
+                                                        {program.degree_level}'s Degree
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -282,9 +344,12 @@ export default function Landing({ auth, programs = [] }) {
                             </div>
                             <div>
                                 <img
-                                    src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070"
+                                    src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
                                     alt="Students studying"
                                     className="rounded-xl shadow-lg"
+                                    loading="lazy"
+                                    decoding="async"
+                                    onError={(e) => { e.currentTarget.src = FALLBACKS.generic; e.currentTarget.onerror = null; }}
                                 />
                             </div>
                         </div>
@@ -340,9 +405,12 @@ export default function Landing({ auth, programs = [] }) {
                             </div>
                             <div className="relative">
                                 <img
-                                    src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2072"
+                                    src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2072&q=80"
                                     alt="Documents preparation"
                                     className="rounded-xl shadow-lg"
+                                    loading="lazy"
+                                    decoding="async"
+                                    onError={(e) => { e.currentTarget.src = FALLBACKS.generic; e.currentTarget.onerror = null; }}
                                 />
                                 <div className="absolute -bottom-6 -left-6 bg-primary-600 text-white p-6 rounded-lg shadow-lg max-w-xs">
                                     <p className="text-lg font-semibold">Pro Tip:</p>
@@ -369,9 +437,12 @@ export default function Landing({ auth, programs = [] }) {
                         <div className="grid md:grid-cols-3 gap-6 mb-12">
                             <div className="relative overflow-hidden rounded-lg shadow-lg h-64">
                                 <img
-                                    src="https://images.unsplash.com/photo-1519197924294-4ba991a11128?q=80&w=2070"
+                                    src="https://images.unsplash.com/photo-1519197924294-4ba991a11128?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
                                     alt="Warsaw skyline"
                                     className="w-full h-full object-cover"
+                                    loading="lazy"
+                                    decoding="async"
+                                    onError={(e) => { e.currentTarget.src = FALLBACKS.generic; e.currentTarget.onerror = null; }}
                                 />
                                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
                                     <h5 className="text-white text-xl font-semibold">Modern Cities</h5>
@@ -379,9 +450,12 @@ export default function Landing({ auth, programs = [] }) {
                             </div>
                             <div className="relative overflow-hidden rounded-lg shadow-lg h-64">
                                 <img
-                                    src="https://images.unsplash.com/photo-1607977018980-d712e7c36d4a?q=80&w=2074"
+                                    src="https://images.unsplash.com/photo-1607977018980-d712e7c36d4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80"
                                     alt="Krakow old town"
                                     className="w-full h-full object-cover"
+                                    loading="lazy"
+                                    decoding="async"
+                                    onError={(e) => { e.currentTarget.src = FALLBACKS.generic; e.currentTarget.onerror = null; }}
                                 />
                                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
                                     <h5 className="text-white text-xl font-semibold">Historic Heritage</h5>
@@ -389,9 +463,12 @@ export default function Landing({ auth, programs = [] }) {
                             </div>
                             <div className="relative overflow-hidden rounded-lg shadow-lg h-64">
                                 <img
-                                    src="https://images.unsplash.com/photo-1543747379-5f2f40e8aa7f?q=80&w=2070"
+                                    src="https://images.unsplash.com/photo-1543747379-5f2f40e8aa7f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
                                     alt="Student life"
                                     className="w-full h-full object-cover"
+                                    loading="lazy"
+                                    decoding="async"
+                                    onError={(e) => { e.currentTarget.src = FALLBACKS.generic; e.currentTarget.onerror = null; }}
                                 />
                                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
                                     <h5 className="text-white text-xl font-semibold">Vibrant Student Life</h5>
@@ -592,9 +669,12 @@ export default function Landing({ auth, programs = [] }) {
                             <div className="bg-white rounded-xl shadow-lg p-6">
                                 <div className="flex items-center mb-4">
                                     <img
-                                        src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&h=200&fit=crop"
+                                        src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=80"
                                         alt="Student testimonial"
                                         className="w-16 h-16 rounded-full object-cover mr-4"
+                                        loading="lazy"
+                                        decoding="async"
+                                        onError={(e) => { e.currentTarget.src = FALLBACKS.avatar; e.currentTarget.onerror = null; }}
                                     />
                                     <div>
                                         <h5 className="font-semibold text-dark-900">David Chen</h5>
@@ -611,9 +691,12 @@ export default function Landing({ auth, programs = [] }) {
                             <div className="bg-white rounded-xl shadow-lg p-6">
                                 <div className="flex items-center mb-4">
                                     <img
-                                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&h=200&fit=crop"
+                                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=80"
                                         alt="Student testimonial"
                                         className="w-16 h-16 rounded-full object-cover mr-4"
+                                        loading="lazy"
+                                        decoding="async"
+                                        onError={(e) => { e.currentTarget.src = FALLBACKS.avatar; e.currentTarget.onerror = null; }}
                                     />
                                     <div>
                                         <h5 className="font-semibold text-dark-900">Maria Rodriguez</h5>
@@ -630,9 +713,12 @@ export default function Landing({ auth, programs = [] }) {
                             <div className="bg-white rounded-xl shadow-lg p-6">
                                 <div className="flex items-center mb-4">
                                     <img
-                                        src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&h=200&fit=crop"
+                                        src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=80"
                                         alt="Student testimonial"
                                         className="w-16 h-16 rounded-full object-cover mr-4"
+                                        loading="lazy"
+                                        decoding="async"
+                                        onError={(e) => { e.currentTarget.src = FALLBACKS.avatar; e.currentTarget.onerror = null; }}
                                     />
                                     <div>
                                         <h5 className="font-semibold text-dark-900">Ahmed Hassan</h5>

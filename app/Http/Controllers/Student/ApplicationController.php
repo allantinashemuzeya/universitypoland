@@ -216,6 +216,12 @@ class ApplicationController extends Controller
             }
         }
 
+        // Check if application fee has been paid
+        if (!$application->hasApplicationFeePaid()) {
+            return redirect()->route('student.applications.show', $application)
+                ->with('error', 'Please pay the application fee before submitting.');
+        }
+
         $application->update([
             'status' => 'submitted',
             'submission_date' => now(),

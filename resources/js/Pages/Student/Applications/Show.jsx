@@ -103,7 +103,8 @@ export default function ShowApplication({ auth, application }) {
 
     const requiredDocuments = ['passport', 'transcript', 'diploma'];
     const uploadedTypes = application.documents.map(doc => doc.type);
-    const canSubmit = requiredDocuments.every(type => uploadedTypes.includes(type));
+    const hasAllDocs = requiredDocuments.every(type => uploadedTypes.includes(type));
+    const canSubmit = hasAllDocs && application.application_fee_paid;
 
     return (
         <AuthenticatedLayout
@@ -158,10 +159,92 @@ export default function ShowApplication({ auth, application }) {
                                                 Submit Application
                                             </PrimaryButton>
                                         ) : (
-                                            <span className="text-sm text-gray-500">Upload all required documents to submit</span>
+                                            <span className="text-sm text-gray-500">
+                                                {!hasAllDocs ? 'Upload all required documents to submit' : 'Pay application fee to submit'}
+                                            </span>
                                         )}
                                     </div>
                                 )}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Payment Status */}
+                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
+                        <div className="p-6 bg-white border-b border-gray-200">
+                            <h3 className="text-lg font-semibold mb-4">Payment Status</h3>
+                            <div className="space-y-4">
+                                {/* Application Fee */}
+                                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                    <div>
+                                        <h4 className="font-medium text-gray-900">Application Fee</h4>
+                                        <p className="text-sm text-gray-600">Required to submit your application</p>
+                                    </div>
+                                    <div className="text-right">
+                                        {application.application_fee_paid ? (
+                                            <div>
+                                                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                                    <svg className="mr-1.5 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                                    </svg>
+                                                    Paid
+                                                </span>
+                                                {application.application_fee_paid_at && (
+                                                    <p className="text-xs text-gray-500 mt-1">
+                                                        Paid on {new Date(application.application_fee_paid_at).toLocaleDateString()}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        ) : (
+                                            <div>
+                                                <p className="font-semibold text-gray-900 mb-2">€50.00</p>
+                                                {application.status === 'draft' && hasAllDocs && (
+                                                    <Link href={route('student.applications.pay', [application.id, 'application'])}>
+                                                        <PrimaryButton className="bg-red-600 hover:bg-red-700">
+                                                            Pay Now
+                                                        </PrimaryButton>
+                                                    </Link>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Commitment Fee */}
+                                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                    <div>
+                                        <h4 className="font-medium text-gray-900">Commitment Fee</h4>
+                                        <p className="text-sm text-gray-600">Required after acceptance to secure your place</p>
+                                    </div>
+                                    <div className="text-right">
+                                        {application.commitment_fee_paid ? (
+                                            <div>
+                                                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                                    <svg className="mr-1.5 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                                    </svg>
+                                                    Paid
+                                                </span>
+                                                {application.commitment_fee_paid_at && (
+                                                    <p className="text-xs text-gray-500 mt-1">
+                                                        Paid on {new Date(application.commitment_fee_paid_at).toLocaleDateString()}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        ) : (
+                                            <div>
+                                                <p className="font-semibold text-gray-900 mb-2">€200.00</p>
+                                                {application.status === 'approved' && (
+                                                    <Link href={route('student.applications.pay', [application.id, 'commitment'])}>
+                                                        <PrimaryButton className="bg-red-600 hover:bg-red-700">
+                                                            Pay Now
+                                                        </PrimaryButton>
+                                                    </Link>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
