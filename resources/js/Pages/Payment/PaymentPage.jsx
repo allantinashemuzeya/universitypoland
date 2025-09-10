@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Head, router, useForm } from '@inertiajs/react';
+import { Head, router, useForm, usePage } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { loadStripe } from '@stripe/stripe-js';
 import {
@@ -8,6 +8,7 @@ import {
     useStripe,
     useElements,
 } from '@stripe/react-stripe-js';
+import axios from 'axios';
 
 const CheckoutForm = ({ application, paymentType, amount, currency, onSuccess }) => {
     const stripe = useStripe();
@@ -28,19 +29,11 @@ const CheckoutForm = ({ application, paymentType, amount, currency, onSuccess })
 
         try {
             // Create payment intent
-            const response = await fetch(route(`student.applications.pay.${paymentType === 'application' ? 'application-fee' : 'commitment-fee'}`, application.id), {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                },
-            });
+            const response = await axios.post(
+                route(`student.applications.pay.${paymentType === 'application' ? 'application-fee' : 'commitment-fee'}`, application.id)
+            );
 
-            const result = await response.json();
-
-            if (!response.ok) {
-                throw new Error(result.error || 'Failed to create payment intent');
-            }
+            const result = response.data;
 
             // Confirm payment with Stripe
             const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(
@@ -59,22 +52,11 @@ const CheckoutForm = ({ application, paymentType, amount, currency, onSuccess })
             }
 
             // Confirm payment on backend
-            const confirmResponse = await fetch(route('student.payments.confirm'), {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                },
-                body: JSON.stringify({
-                    payment_intent_id: paymentIntent.id,
-                }),
+            const confirmResponse = await axios.post(route('student.payments.confirm'), {
+                payment_intent_id: paymentIntent.id,
             });
 
-            const confirmResult = await confirmResponse.json();
-
-            if (!confirmResponse.ok) {
-                throw new Error(confirmResult.error || 'Failed to confirm payment');
-            }
+            const confirmResult = confirmResponse.data;
 
             setSucceeded(true);
             setProcessing(false);
@@ -90,7 +72,16 @@ const CheckoutForm = ({ application, paymentType, amount, currency, onSuccess })
                 onSuccess();
             }
         } catch (err) {
-            setError(err.message);
+            if (err.response) {
+                // Server responded with error
+                setError(err.response.data.error || err.response.data.message || 'Payment failed');
+            } else if (err.request) {
+                // Request was made but no response
+                setError('Network error. Please check your connection.');
+            } else {
+                // Something else happened
+                setError(err.message || 'An unexpected error occurred');
+            }
             setProcessing(false);
         }
     };
