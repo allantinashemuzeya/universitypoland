@@ -18,7 +18,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Student routes
-Route::middleware(['auth', 'verified'])->prefix('student')->name('student.')->group(function () {
+Route::middleware(['auth', 'verified', 'throttle:60,1'])->prefix('student')->name('student.')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\Student\DashboardController::class, 'index'])->name('dashboard');
     
     // Applications
@@ -35,11 +35,13 @@ Route::middleware(['auth', 'verified'])->prefix('student')->name('student.')->gr
     Route::get('/communications/{communication}', [\App\Http\Controllers\Student\CommunicationController::class, 'show'])->name('communications.show');
     Route::post('/communications/{communication}/reply', [\App\Http\Controllers\Student\CommunicationController::class, 'reply'])->name('communications.reply');
     
-    // Payments
-    Route::get('/applications/{application}/pay/{type}', [\App\Http\Controllers\PaymentController::class, 'showPaymentPage'])->name('applications.pay');
-    Route::post('/applications/{application}/pay/application-fee', [\App\Http\Controllers\PaymentController::class, 'createApplicationFeeIntent'])->name('applications.pay.application-fee');
-    Route::post('/applications/{application}/pay/commitment-fee', [\App\Http\Controllers\PaymentController::class, 'createCommitmentFeeIntent'])->name('applications.pay.commitment-fee');
-    Route::post('/payments/confirm', [\App\Http\Controllers\PaymentController::class, 'confirmPayment'])->name('payments.confirm');
+    // Payments (with stricter rate limiting)
+    Route::middleware(['throttle:10,1'])->group(function () {
+        Route::get('/applications/{application}/pay/{type}', [\App\Http\Controllers\PaymentController::class, 'showPaymentPage'])->name('applications.pay');
+        Route::post('/applications/{application}/pay/application-fee', [\App\Http\Controllers\PaymentController::class, 'createApplicationFeeIntent'])->name('applications.pay.application-fee');
+        Route::post('/applications/{application}/pay/commitment-fee', [\App\Http\Controllers\PaymentController::class, 'createCommitmentFeeIntent'])->name('applications.pay.commitment-fee');
+        Route::post('/payments/confirm', [\App\Http\Controllers\PaymentController::class, 'confirmPayment'])->name('payments.confirm');
+    });
     Route::get('/applications/{application}/payments', [\App\Http\Controllers\PaymentController::class, 'getPaymentHistory'])->name('applications.payments');
     Route::get('/payments/{payment}/receipt', [\App\Http\Controllers\PaymentController::class, 'downloadReceipt'])->name('payments.receipt');
 });
