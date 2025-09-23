@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use App\Models\Payment;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -38,7 +39,7 @@ class PaymentController extends Controller
         }
 
         try {
-            $amount = config('stripe.fees.application');
+            $amount = Setting::get('application_fee_amount', config('stripe.fees.application'));
             $currency = config('stripe.currency');
 
             // Create payment intent
@@ -108,7 +109,7 @@ class PaymentController extends Controller
         }
 
         try {
-            $amount = config('stripe.fees.commitment');
+            $amount = Setting::get('commitment_fee_amount', config('stripe.fees.commitment'));
             $currency = config('stripe.currency');
 
             // Create payment intent
@@ -235,8 +236,8 @@ class PaymentController extends Controller
 
         $feeType = $type === 'application' ? 'application_fee' : 'commitment_fee';
         $amount = $type === 'application' 
-            ? config('stripe.fees.application') 
-            : config('stripe.fees.commitment');
+            ? Setting::get('application_fee_amount', config('stripe.fees.application'))
+            : Setting::get('commitment_fee_amount', config('stripe.fees.commitment'));
 
         // Check if fee is already paid
         if ($type === 'application' && $application->hasApplicationFeePaid()) {

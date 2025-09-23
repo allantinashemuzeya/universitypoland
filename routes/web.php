@@ -78,6 +78,10 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
     Route::get('/reports', [\App\Http\Controllers\Admin\ReportController::class, 'index'])->name('reports');
     Route::get('/reports/applications', [\App\Http\Controllers\Admin\ReportController::class, 'applications'])->name('reports.applications');
     Route::get('/reports/export', [\App\Http\Controllers\Admin\ReportController::class, 'export'])->name('reports.export');
+    
+    // Settings
+    Route::get('/settings', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('settings.index');
+    Route::post('/settings/fees', [\App\Http\Controllers\Admin\SettingsController::class, 'updateFees'])->name('settings.fees.update');
 });
 
 Route::middleware('auth')->group(function () {
