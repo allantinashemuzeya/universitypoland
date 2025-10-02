@@ -3,6 +3,21 @@ import { useState, useEffect } from 'react';
 
 export default function Landing({ auth, programs = [] }) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    
+    // Using Pexels images which are more reliable
+    const heroImages = [
+        'https://images.pexels.com/photos/1438072/pexels-photo-1438072.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=1',
+        'https://images.pexels.com/photos/159775/library-la-trobe-study-students-159775.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=1',
+        'https://images.pexels.com/photos/1462630/pexels-photo-1462630.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=1'
+    ];
+    
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentImageIndex((prevIndex) => (prevIndex + 1) % heroImages.length);
+        }, 5000);
+        return () => clearInterval(interval);
+    }, []);
 
     return (
         <>
@@ -83,30 +98,42 @@ export default function Landing({ auth, programs = [] }) {
                 </nav>
 
                 {/* Hero Section */}
-                <section className="relative flex items-center overflow-hidden bg-gradient-to-br from-red-600 to-red-700 min-h-[600px]">
+                <section className="relative h-[600px] flex items-center overflow-hidden">
                     <div className="absolute inset-0 z-0">
-                        <div className="absolute inset-0 bg-black opacity-10"></div>
-                        <div className="absolute inset-0 bg-gradient-to-br from-red-600/90 to-red-700/90"></div>
+                        {heroImages.map((image, index) => (
+                            <div
+                                key={index}
+                                className={`absolute inset-0 transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`}
+                            >
+                                <img
+                                    src={image}
+                                    alt="University campus"
+                                    className="w-full h-full object-cover"
+                                    loading="eager"
+                                />
+                            </div>
+                        ))}
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-red-900/70"></div>
                     </div>
-                    <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+                    <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="max-w-3xl">
                             <h2 className="text-5xl md:text-6xl font-display font-bold text-white mb-6">
                                 Your Journey to Excellence Starts Here
                             </h2>
-                            <p className="text-xl text-gray-100 mb-8">
+                            <p className="text-xl text-gray-200 mb-8">
                                 Connect with top universities across Europe and unlock world-class education opportunities. 
                                 Perfect for international students from around the globe.
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4">
                                 <Link
                                     href={route('register')}
-                                    className="bg-white text-red-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition inline-block text-center"
+                                    className="bg-red-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-red-700 transition inline-block text-center"
                                 >
                                     Start Your Application
                                 </Link>
                                 <a
                                     href="#programs"
-                                    className="bg-red-800 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-red-900 transition inline-block text-center border border-white/20"
+                                    className="bg-white text-dark-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition inline-block text-center"
                                 >
                                     Explore Programs
                                 </a>
@@ -151,29 +178,45 @@ export default function Landing({ auth, programs = [] }) {
                             </p>
                         </div>
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {programs.slice(0, 6).map((program, index) => {
-                                const colors = [
-                                    'from-blue-500 to-blue-600',
-                                    'from-purple-500 to-purple-600',
-                                    'from-green-500 to-green-600',
-                                    'from-orange-500 to-orange-600',
-                                    'from-pink-500 to-pink-600',
-                                    'from-teal-500 to-teal-600'
-                                ];
-                                const bgColor = colors[index % colors.length];
+                            {programs.slice(0, 6).map((program) => {
+                                // Program images based on field of study
+                                const getProgramImage = () => {
+                                    const name = program.name.toLowerCase();
+                                    if (name.includes('business') || name.includes('management') || name.includes('mba')) {
+                                        return 'https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=800';
+                                    } else if (name.includes('engineering') || name.includes('technology')) {
+                                        return 'https://images.pexels.com/photos/256381/pexels-photo-256381.jpeg?auto=compress&cs=tinysrgb&w=800';
+                                    } else if (name.includes('medicine') || name.includes('medical') || name.includes('health')) {
+                                        return 'https://images.pexels.com/photos/4021808/pexels-photo-4021808.jpeg?auto=compress&cs=tinysrgb&w=800';
+                                    } else if (name.includes('computer') || name.includes('software') || name.includes('it')) {
+                                        return 'https://images.pexels.com/photos/574071/pexels-photo-574071.jpeg?auto=compress&cs=tinysrgb&w=800';
+                                    } else if (name.includes('law')) {
+                                        return 'https://images.pexels.com/photos/5668882/pexels-photo-5668882.jpeg?auto=compress&cs=tinysrgb&w=800';
+                                    } else {
+                                        return 'https://images.pexels.com/photos/256490/pexels-photo-256490.jpeg?auto=compress&cs=tinysrgb&w=800';
+                                    }
+                                };
                                 
                                 return (
                                     <div key={program.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition">
-                                        <div className={`relative h-48 bg-gradient-to-br ${bgColor} flex items-end p-6`}>
-                                            <div className="text-white w-full">
-                                                <div className="flex items-center justify-between">
-                                                    <div className="text-3xl">
-                                                        {program.degree_level === 'bachelor' && '🎓'}
-                                                        {program.degree_level === 'master' && '🎯'}
-                                                        {program.degree_level === 'phd' && '🔬'}
-                                                    </div>
-                                                    <div className="text-sm uppercase tracking-wide bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
-                                                        {program.degree_level}'s Degree
+                                        <div className="relative h-48">
+                                            <img
+                                                src={getProgramImage()}
+                                                alt={program.name}
+                                                className="w-full h-full object-cover"
+                                                loading="lazy"
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent flex items-end">
+                                                <div className="text-white p-6 w-full">
+                                                    <div className="flex items-center justify-between">
+                                                        <div className="text-3xl">
+                                                            {program.degree_level === 'bachelor' && '🎓'}
+                                                            {program.degree_level === 'master' && '🎯'}
+                                                            {program.degree_level === 'phd' && '🔬'}
+                                                        </div>
+                                                        <div className="text-sm uppercase tracking-wide bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
+                                                            {program.degree_level}'s Degree
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -258,26 +301,13 @@ export default function Landing({ auth, programs = [] }) {
                                     </div>
                                 </div>
                             </div>
-                            <div className="bg-gradient-to-br from-red-100 to-red-50 rounded-xl shadow-lg p-12 flex items-center justify-center">
-                                <div className="text-center">
-                                    <div className="grid grid-cols-3 gap-4 mb-6">
-                                        <div className="bg-white rounded-lg p-4 shadow-md">
-                                            <div className="text-3xl mb-2">🎓</div>
-                                            <div className="text-sm text-gray-600">Excellence</div>
-                                        </div>
-                                        <div className="bg-white rounded-lg p-4 shadow-md">
-                                            <div className="text-3xl mb-2">🌍</div>
-                                            <div className="text-sm text-gray-600">Global</div>
-                                        </div>
-                                        <div className="bg-white rounded-lg p-4 shadow-md">
-                                            <div className="text-3xl mb-2">🤝</div>
-                                            <div className="text-sm text-gray-600">Support</div>
-                                        </div>
-                                    </div>
-                                    <p className="text-lg text-gray-700 font-medium">
-                                        Join thousands of successful students
-                                    </p>
-                                </div>
+                            <div>
+                                <img
+                                    src="https://images.pexels.com/photos/1595391/pexels-photo-1595391.jpeg?auto=compress&cs=tinysrgb&w=800"
+                                    alt="Students studying together"
+                                    className="rounded-xl shadow-lg w-full h-full object-cover"
+                                    loading="lazy"
+                                />
                             </div>
                         </div>
                     </div>
@@ -331,13 +361,12 @@ export default function Landing({ auth, programs = [] }) {
                                 </div>
                             </div>
                             <div className="relative">
-                                <div className="bg-gradient-to-br from-gray-100 to-gray-50 rounded-xl shadow-lg p-12 min-h-[400px] flex items-center justify-center">
-                                    <div className="text-center">
-                                        <div className="text-8xl mb-6">📋</div>
-                                        <h5 className="text-2xl font-bold text-gray-800 mb-4">Document Preparation</h5>
-                                        <p className="text-gray-600 max-w-sm">Organize your documents systematically for a smooth application process</p>
-                                    </div>
-                                </div>
+                                <img
+                                    src="https://images.pexels.com/photos/357514/pexels-photo-357514.jpeg?auto=compress&cs=tinysrgb&w=800"
+                                    alt="Document preparation"
+                                    className="rounded-xl shadow-lg w-full"
+                                    loading="lazy"
+                                />
                                 <div className="absolute -bottom-6 -left-6 bg-red-600 text-white p-6 rounded-lg shadow-lg max-w-xs">
                                     <p className="text-lg font-semibold">Pro Tip:</p>
                                     <p className="mt-2">Start preparing your documents early. Translation and certification can take 2-3 weeks.</p>
@@ -361,25 +390,40 @@ export default function Landing({ auth, programs = [] }) {
                         
                         {/* Image Gallery */}
                         <div className="grid md:grid-cols-3 gap-6 mb-12">
-                            <div className="relative overflow-hidden rounded-lg shadow-lg h-64 bg-gradient-to-br from-blue-500 to-blue-600 p-6 flex items-end">
-                                <div>
-                                    <div className="text-6xl mb-4 text-white/80">🏙️</div>
+                            <div className="relative overflow-hidden rounded-lg shadow-lg h-64">
+                                <img
+                                    src="https://images.pexels.com/photos/46273/pexels-photo-46273.jpeg?auto=compress&cs=tinysrgb&w=800"
+                                    alt="Warsaw skyline"
+                                    className="w-full h-full object-cover"
+                                    loading="lazy"
+                                />
+                                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
                                     <h5 className="text-white text-xl font-semibold">Modern Cities</h5>
-                                    <p className="text-white/80 text-sm mt-2">Experience vibrant urban life in Warsaw, Krakow, and more</p>
+                                    <p className="text-white/80 text-sm mt-1">Experience vibrant urban life in Warsaw, Krakow, and more</p>
                                 </div>
                             </div>
-                            <div className="relative overflow-hidden rounded-lg shadow-lg h-64 bg-gradient-to-br from-amber-500 to-amber-600 p-6 flex items-end">
-                                <div>
-                                    <div className="text-6xl mb-4 text-white/80">🏰</div>
+                            <div className="relative overflow-hidden rounded-lg shadow-lg h-64">
+                                <img
+                                    src="https://images.pexels.com/photos/4916559/pexels-photo-4916559.jpeg?auto=compress&cs=tinysrgb&w=800"
+                                    alt="Krakow old town"
+                                    className="w-full h-full object-cover"
+                                    loading="lazy"
+                                />
+                                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
                                     <h5 className="text-white text-xl font-semibold">Historic Heritage</h5>
-                                    <p className="text-white/80 text-sm mt-2">Discover centuries of rich history and culture</p>
+                                    <p className="text-white/80 text-sm mt-1">Discover centuries of rich history and culture</p>
                                 </div>
                             </div>
-                            <div className="relative overflow-hidden rounded-lg shadow-lg h-64 bg-gradient-to-br from-green-500 to-green-600 p-6 flex items-end">
-                                <div>
-                                    <div className="text-6xl mb-4 text-white/80">👥</div>
+                            <div className="relative overflow-hidden rounded-lg shadow-lg h-64">
+                                <img
+                                    src="https://images.pexels.com/photos/1438081/pexels-photo-1438081.jpeg?auto=compress&cs=tinysrgb&w=800"
+                                    alt="Students in campus"
+                                    className="w-full h-full object-cover"
+                                    loading="lazy"
+                                />
+                                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
                                     <h5 className="text-white text-xl font-semibold">Vibrant Student Life</h5>
-                                    <p className="text-white/80 text-sm mt-2">Join a diverse community of international students</p>
+                                    <p className="text-white/80 text-sm mt-1">Join a diverse community of international students</p>
                                 </div>
                             </div>
                         </div>
@@ -576,9 +620,11 @@ export default function Landing({ auth, programs = [] }) {
                         <div className="grid md:grid-cols-3 gap-8">
                             <div className="bg-white rounded-xl shadow-lg p-6">
                                 <div className="flex items-center mb-4">
-                                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-2xl font-bold mr-4">
-                                        DC
-                                    </div>
+                                    <img
+                                        src="https://ui-avatars.com/api/?name=David+Chen&background=3b82f6&color=fff&size=200"
+                                        alt="David Chen"
+                                        className="w-16 h-16 rounded-full mr-4"
+                                    />
                                     <div>
                                         <h5 className="font-semibold text-dark-900">David Chen</h5>
                                         <p className="text-gray-600 text-sm">Computer Science, Warsaw</p>
@@ -593,9 +639,11 @@ export default function Landing({ auth, programs = [] }) {
                             </div>
                             <div className="bg-white rounded-xl shadow-lg p-6">
                                 <div className="flex items-center mb-4">
-                                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-white text-2xl font-bold mr-4">
-                                        MR
-                                    </div>
+                                    <img
+                                        src="https://ui-avatars.com/api/?name=Maria+Rodriguez&background=9333ea&color=fff&size=200"
+                                        alt="Maria Rodriguez"
+                                        className="w-16 h-16 rounded-full mr-4"
+                                    />
                                     <div>
                                         <h5 className="font-semibold text-dark-900">Maria Rodriguez</h5>
                                         <p className="text-gray-600 text-sm">Medicine, Krakow</p>
@@ -610,9 +658,11 @@ export default function Landing({ auth, programs = [] }) {
                             </div>
                             <div className="bg-white rounded-xl shadow-lg p-6">
                                 <div className="flex items-center mb-4">
-                                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center text-white text-2xl font-bold mr-4">
-                                        AH
-                                    </div>
+                                    <img
+                                        src="https://ui-avatars.com/api/?name=Ahmed+Hassan&background=22c55e&color=fff&size=200"
+                                        alt="Ahmed Hassan"
+                                        className="w-16 h-16 rounded-full mr-4"
+                                    />
                                     <div>
                                         <h5 className="font-semibold text-dark-900">Ahmed Hassan</h5>
                                         <p className="text-gray-600 text-sm">Business Admin, Wrocław</p>
