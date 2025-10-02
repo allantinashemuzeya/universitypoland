@@ -23,7 +23,7 @@ export default function Login({ status, canResetPassword }) {
 
     return (
         <GuestLayout>
-            <Head title="Sign In - UITM Poland" />
+            <Head title="Sign In - Nexus Study" />
 
             <div>
                 <h2 className="text-center text-3xl font-bold text-gray-900">

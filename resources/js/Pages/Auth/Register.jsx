@@ -23,7 +23,7 @@ export default function Register() {
 
     return (
         <GuestLayout>
-            <Head title="Create Account - UITM Poland" />
+            <Head title="Create Account - Nexus Study" />
 
             <div>
                 <h2 className="text-center text-3xl font-bold text-gray-900">

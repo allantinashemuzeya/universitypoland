@@ -8,11 +8,11 @@ export default function GuestLayout({ children }) {
                 <Link href="/" className="flex justify-center">
                     <div className="flex items-center space-x-2">
                         <div className="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center">
-                            <span className="text-white font-bold text-xl">U</span>
+                            <span className="text-white font-bold text-xl">N</span>
                         </div>
                         <div>
-                            <h1 className="text-2xl font-bold text-gray-900">UITM Poland</h1>
-                            <p className="text-xs text-gray-600">Student Recruitment System</p>
+                            <h1 className="text-2xl font-bold text-gray-900">Nexus Study</h1>
+                            <p className="text-xs text-gray-600">Your Gateway to Education in Poland</p>
                         </div>
                     </div>
                 </Link>
@@ -26,7 +26,7 @@ export default function GuestLayout({ children }) {
 
             <div className="mt-8 text-center">
                 <p className="text-sm text-gray-600">
-                    © {new Date().getFullYear()} University of Information Technology and Management
+                    © {new Date().getFullYear()} Nexus Study - Education Services
                 </p>
             </div>
         </div>
