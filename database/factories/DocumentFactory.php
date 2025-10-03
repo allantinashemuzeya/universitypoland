@@ -18,7 +18,7 @@ class DocumentFactory extends Factory
      */
     public function definition(): array
     {
-        $types = ['passport', 'transcript', 'diploma', 'language_certificate', 'cv', 'recommendation_letter', 'other'];
+        $types = ['passport', 'transcript', 'diploma', 'birth_certificate', 'medical_certificate', 'eligibility_certificate', 'language_certificate', 'cv', 'recommendation_letter', 'other'];
         $statuses = ['pending', 'verified', 'rejected'];
         
         return [

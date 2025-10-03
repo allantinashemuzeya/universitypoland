@@ -32,6 +32,9 @@ export default function DocumentsIndex({ auth, documents }) {
             passport: 'Passport Copy',
             transcript: 'Academic Transcript',
             diploma: 'Diploma/Certificate',
+            birth_certificate: 'Birth Certificate',
+            medical_certificate: 'Medical Certificate',
+            eligibility_certificate: 'Eligibility Certificate',
             language_certificate: 'Language Certificate',
             cv: 'CV/Resume',
             recommendation_letter: 'Recommendation Letter',
@@ -130,7 +133,7 @@ export default function DocumentsIndex({ auth, documents }) {
                                                         <a
                                                             href={route('student.documents.show', document.id)}
                                                             target="_blank"
-                                                            className="text-primary-600 hover:text-primary-900"
+                                                            className="text-red-600 hover:text-red-900"
                                                         >
                                                             View
                                                         </a>
@@ -154,7 +157,7 @@ export default function DocumentsIndex({ auth, documents }) {
                                         href={link.url || '#'}
                                         className={`px-3 py-1 rounded ${
                                             link.active
-                                                ? 'bg-primary-600 text-white'
+                                                ? 'bg-red-600 text-white'
                                                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                                         } ${!link.url && 'cursor-not-allowed opacity-50'}`}
                                         dangerouslySetInnerHTML={{ __html: link.label }}

@@ -332,6 +332,9 @@ export default function Landing({ auth, programs = [] }) {
                                         'Valid Passport (with at least 6 months validity)',
                                         'Academic Transcripts (translated to English)',
                                         'High School Diploma or Bachelor\'s Degree',
+                                        'Birth Certificate (translated to English)',
+                                        'Medical Certificate',
+                                        'Eligibility Certificate',
                                         'English Proficiency Certificate (IELTS/TOEFL)',
                                         'Motivation Letter',
                                         'CV/Resume',
@@ -744,8 +747,8 @@ export default function Landing({ auth, programs = [] }) {
                                 <h4 className="text-lg font-semibold mb-4">Contact</h4>
                                 <ul className="space-y-2 text-gray-400">
                                     <li>Email: admissions@nexusstudy.com</li>
-                                    <li>Phone: +1 234 567 890</li>
-                                    <li>WhatsApp: +1 234 567 890</li>
+                                    <li>Phone: +48 794 961 019</li>
+                                    <li>WhatsApp: +48 794 961 019</li>
                                 </ul>
                             </div>
                         </div>

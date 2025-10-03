@@ -27,7 +27,7 @@ class SettingsSeeder extends Seeder
         Setting::updateOrCreate(
             ['key' => 'commitment_fee_amount'],
             [
-                'value' => '35000', // €350 in cents
+                'value' => '30000', // €300 in cents
                 'type' => 'integer',
                 'group' => 'fees',
                 'description' => 'Commitment fee amount in cents'

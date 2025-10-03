@@ -34,7 +34,7 @@ return new class extends Migration
             ],
             [
                 'key' => 'commitment_fee_amount',
-                'value' => '35000',
+                'value' => '30000',
                 'type' => 'integer',
                 'group' => 'fees',
                 'description' => 'Commitment fee amount in cents (EUR)',

@@ -17,7 +17,7 @@ export default function Resources() {
             title: "Visa Process",
             icon: "📋",
             items: [
-                { title: "Required Documents", content: "Passport, admission letter, financial proof, health insurance, accommodation proof." },
+                { title: "Required Documents", content: "Valid passport, academic transcripts, birth certificate (translated), medical certificate, eligibility certificate, English proficiency certificate (IELTS/TOEFL), financial proof, health insurance." },
                 { title: "Processing Time", content: "Typically 15-30 days. Apply at least 2 months before travel." },
                 { title: "Visa Fees", content: "Student visa: €80. Residence permit: €340 (paid after arrival)." },
                 { title: "Work Permit", content: "Students can work up to 20 hours/week during studies without additional permit." }
@@ -63,7 +63,7 @@ export default function Resources() {
                     </div>
 
                     {/* Quick Links */}
-                    <div className="bg-gradient-to-r from-primary-600 to-primary-800 text-white p-8 rounded-lg mb-12">
+                    <div className="bg-gradient-to-r from-red-600 to-red-800 text-white p-8 rounded-lg mb-12">
                         <h2 className="text-2xl font-bold mb-6">Quick Links & Downloads</h2>
                         <div className="grid md:grid-cols-4 gap-4">
                             <a href="#" className="bg-white/20 backdrop-blur p-4 rounded-lg hover:bg-white/30 transition text-center">
@@ -89,7 +89,7 @@ export default function Resources() {
                     <div className="grid lg:grid-cols-2 gap-8">
                         {sections.map((section, index) => (
                             <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden">
-                                <div className="bg-gradient-to-r from-primary-600 to-primary-700 p-6 text-white">
+                                <div className="bg-gradient-to-r from-red-600 to-red-700 p-6 text-white">
                                     <div className="flex items-center">
                                         <div className="text-4xl mr-4">{section.icon}</div>
                                         <h3 className="text-2xl font-bold">{section.title}</h3>
@@ -153,7 +153,7 @@ export default function Resources() {
                         <h2 className="text-2xl font-bold mb-4">Need More Information?</h2>
                         <p className="mb-6">Our international student support team is here to help you!</p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <a href="mailto:support@nexusstudy.com" className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition inline-block">
+                            <a href="mailto:support@nexusstudy.com" className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition inline-block">
                                 Email Support
                             </a>
                             <a href="#" className="border-2 border-white text-white px-6 py-3 rounded-lg hover:bg-white hover:text-dark-900 transition inline-block">
@@ -161,7 +161,7 @@ export default function Resources() {
                             </a>
                         </div>
                         <p className="mt-6 text-gray-400">
-                            WhatsApp: +1 234 567 890 | Office Hours: Mon-Fri 9:00-17:00 CET
+                            Phone/WhatsApp: +48 794 961 019 | Office Hours: Mon-Fri 9:00-17:00 CET
                         </p>
                     </div>
                 </div>
