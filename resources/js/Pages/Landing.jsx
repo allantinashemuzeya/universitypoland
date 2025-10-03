@@ -707,7 +707,7 @@ export default function Landing({ auth, programs = [] }) {
                             </a>
                         </div>
                         <p className="mt-8 text-red-100">
-                            Applications are open for 2024/2025 academic year
+                            Applications are open for 2025/2026 academic year
                         </p>
                     </div>
                 </section>
@@ -746,14 +746,14 @@ export default function Landing({ auth, programs = [] }) {
                             <div>
                                 <h4 className="text-lg font-semibold mb-4">Contact</h4>
                                 <ul className="space-y-2 text-gray-400">
-                                    <li>Email: admissions@nexusstudy.com</li>
+                                    <li>Email: admin@nexus-enterprise.pl</li>
                                     <li>Phone: +48 794 961 019</li>
                                     <li>WhatsApp: +48 794 961 019</li>
                                 </ul>
                             </div>
                         </div>
                         <div className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
-                            <p>&copy; 2024 Nexus Study. All rights reserved.</p>
+                            <p>&copy; 2025 Nexus Study. All rights reserved.</p>
                         </div>
                     </div>
                 </footer>

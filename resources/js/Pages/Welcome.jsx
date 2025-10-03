@@ -230,8 +230,8 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                             <div>
                                 <h4 className="text-lg font-semibold mb-4">Contact</h4>
                                 <ul className="space-y-2 text-gray-400">
-                                    <li>Email: info@nexusstudy.com</li>
-                                    <li>Phone: +48 123 456 789</li>
+                                    <li>Email: admin@nexus-enterprise.pl</li>
+                                    <li>Phone: +48 794 961 019</li>
                                 </ul>
                             </div>
                             <div>
@@ -242,7 +242,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                             </div>
                         </div>
                         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-                            <p>&copy; 2024 Nexus Study. All rights reserved.</p>
+                            <p>&copy; 2025 Nexus Study. All rights reserved.</p>
                         </div>
                     </div>
                 </footer>

@@ -14,7 +14,7 @@ export default function PublicLayout({ children }) {
                     <div className="flex justify-between h-16">
                         <div className="flex items-center">
                             <Link href="/" className="flex items-center">
-                                <ApplicationLogo className="h-10 w-auto text-primary-600" />
+                                <ApplicationLogo className="h-10 w-auto text-red-600" />
                                 <span className="ml-3 text-2xl font-display font-bold text-dark-900">
                                     Nexus Study
                                 </span>
@@ -25,25 +25,25 @@ export default function PublicLayout({ children }) {
                         <div className="hidden md:flex items-center space-x-8">
                             <Link
                                 href="/"
-                                className="text-gray-700 hover:text-primary-600 transition font-medium"
+                                className="text-gray-700 hover:text-red-600 transition font-medium"
                             >
                                 Home
                             </Link>
                             <Link
                                 href="/resources"
-                                className="text-gray-700 hover:text-primary-600 transition font-medium"
+                                className="text-gray-700 hover:text-red-600 transition font-medium"
                             >
                                 Life in Poland
                             </Link>
                             <Link
                                 href="/login"
-                                className="text-gray-700 hover:text-primary-600 transition font-medium"
+                                className="text-gray-700 hover:text-red-600 transition font-medium"
                             >
                                 Login
                             </Link>
                             <Link
                                 href="/register"
-                                className="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition font-medium"
+                                className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition font-medium"
                             >
                                 Apply Now
                             </Link>
@@ -53,7 +53,7 @@ export default function PublicLayout({ children }) {
                         <div className="md:hidden flex items-center">
                             <button
                                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                                className="text-gray-700 hover:text-primary-600 focus:outline-none"
+                                className="text-gray-700 hover:text-red-600 focus:outline-none"
                             >
                                 <svg
                                     className="h-6 w-6"
@@ -81,25 +81,25 @@ export default function PublicLayout({ children }) {
                         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                             <Link
                                 href="/"
-                                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50"
+                                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-red-600 hover:bg-gray-50"
                             >
                                 Home
                             </Link>
                             <Link
                                 href="/resources"
-                                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50"
+                                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-red-600 hover:bg-gray-50"
                             >
                                 Life in Poland
                             </Link>
                             <Link
                                 href="/login"
-                                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50"
+                                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-red-600 hover:bg-gray-50"
                             >
                                 Login
                             </Link>
                             <Link
                                 href="/register"
-                                className="block px-3 py-2 rounded-md text-base font-medium bg-primary-600 text-white hover:bg-primary-700"
+                                className="block px-3 py-2 rounded-md text-base font-medium bg-red-600 text-white hover:bg-red-700"
                             >
                                 Apply Now
                             </Link>
@@ -142,9 +142,9 @@ export default function PublicLayout({ children }) {
                         <div>
                             <h3 className="text-lg font-bold mb-4">Contact Us</h3>
                             <ul className="space-y-2 text-gray-400">
-                                <li>Email: info@nexusstudy.com</li>
-                                <li>Phone: +1 234 567 890</li>
-                                <li>WhatsApp: +1 234 567 890</li>
+                                <li>Email: admin@nexus-enterprise.pl</li>
+                                <li>Phone: +48 794 961 019</li>
+                                <li>WhatsApp: +48 794 961 019</li>
                                 <li>Office: Mon-Fri 9:00-17:00 CET</li>
                             </ul>
                         </div>

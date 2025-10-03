@@ -153,7 +153,7 @@ export default function Resources() {
                         <h2 className="text-2xl font-bold mb-4">Need More Information?</h2>
                         <p className="mb-6">Our international student support team is here to help you!</p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <a href="mailto:support@nexusstudy.com" className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition inline-block">
+                            <a href="mailto:admin@nexus-enterprise.pl" className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition inline-block">
                                 Email Support
                             </a>
                             <a href="#" className="border-2 border-white text-white px-6 py-3 rounded-lg hover:bg-white hover:text-dark-900 transition inline-block">
