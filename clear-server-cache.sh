@@ -48,10 +48,11 @@ composer install --optimize-autoloader --no-dev --no-interaction
 npm ci
 print_status "Dependencies updated"
 
-# Step 3: Build frontend assets (CRITICAL for new document fields)
+# Step 3: Build frontend assets (CRITICAL - ALWAYS REQUIRED FOR FRONTEND CHANGES)
 print_info "Step 3: Building frontend assets..."
+print_warning "This step is CRITICAL - Frontend changes won't show without rebuilding!"
 npm run build
-print_status "Frontend assets rebuilt"
+print_status "Frontend assets rebuilt with new hashes"
 
 # Step 4: Clear ALL Laravel caches
 print_info "Step 4: Clearing all Laravel caches..."
@@ -188,7 +189,8 @@ echo ""
 echo "📋 What was updated:"
 echo "  • All Laravel caches cleared (config, routes, views, events, queue)"
 echo "  • OPcache cleared (if available)"
-echo "  • Frontend assets rebuilt (new document fields should now be visible)"
+echo "  • ⚡ Frontend assets rebuilt (CRITICAL - new hashes generated)"
+echo "  • New document fields now visible (Birth, Medical, Eligibility certificates)"
 echo "  • Database settings updated:"
 echo "    - Application Fee: €50"
 echo "    - Commitment Fee: €300"
